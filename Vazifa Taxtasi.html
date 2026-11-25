@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vazifa Taxtasi</title>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','-apple-system','BlinkMacSystemFont','Segoe UI','sans-serif']}}}}</script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none}body{-webkit-font-smoothing:antialiased;background:#eef6ff}
+.dark body{background:#0b1220}.dark input,.dark select{color-scheme:dark}
+.dots{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56' fill='none' stroke='%236b8fd6' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='14' cy='14' r='7'/%3E%3Cpath d='m10.5 14 2.5 2.5 4.5-5'/%3E%3Crect x='36' y='36' width='13' height='13' rx='3.5'/%3E%3Cpath d='M40 42.5h5'/%3E%3C/svg%3E");opacity:.18}
+.dark .dots{opacity:.10}
+#root{height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}
+.b1{background:radial-gradient(closest-side,rgba(56,189,248,.55),transparent)}.dark .b1{background:radial-gradient(closest-side,rgba(14,116,144,.4),transparent)}
+.b2{background:radial-gradient(closest-side,rgba(167,139,250,.5),transparent)}.dark .b2{background:radial-gradient(closest-side,rgba(109,40,217,.35),transparent)}
+.b3{background:radial-gradient(closest-side,rgba(110,231,183,.55),transparent)}.dark .b3{background:radial-gradient(closest-side,rgba(5,150,105,.25),transparent)}
+@keyframes sl{from{transform:translateX(100%)}to{transform:none}}
+@keyframes up{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes fd{from{opacity:0}to{opacity:1}}
+.sl{animation:sl .28s cubic-bezier(.2,.8,.2,1)}.up{animation:up .22s ease-out}.fd{animation:fd .2s}
+</style>
+</head>
+<body class="text-slate-900 dark:text-slate-100 font-sans">
+<div id="root" class="h-full"></div>
+<script>
+const {useState,useEffect,useMemo}=React;const html=htm.bind(React.createElement);
+const P={plus:'M5 12h14M12 5v14',search:'m21 21-4.3-4.3M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16',x:'M18 6 6 18M6 6l12 12',right:'M5 12h14m-7-7 7 7-7 7',left:'M19 12H5m7 7-7-7 7-7',check:'M20 6 9 17l-5-5',trash:'M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2',edit:'M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z',board:'M3 3h7v9H3zM14 3h7v5h-7zM14 12h7v9h-7zM3 16h7v5H3z',table:'M3 3h18v18H3zM3 9h18M3 15h18M9 3v18',chart:'M3 3v18h18M7 16v-5M12 16V7M17 16v-3',sun:'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',moon:'M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z',cal:'M3 4h18v18H3zM16 2v4M8 2v4M3 10h18',reset:'M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5',layers:'m12 2 10 5-10 5L2 7zM2 17l10 5 10-5M2 12l10 5 10-5',clock:'M12 6v6l4 2M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z',phone:'M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z',send:'m22 2-7 20-4-9-9-4Zm0 0L11 13',shield:'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z',flame:'M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3 0 1.4 1 2.5 2.5 2.5Z',cross:'M9 3h6v6h6v6h-6v6H9v-6H3V9h6z',zap:'M13 2 3 14h9l-1 8 10-12h-9l1-8z',wind:'M17.7 7.7a2.5 2.5 0 1 1 1.8 4.3H2M9.6 4.6A2 2 0 1 1 11 8H2M12.6 19.4A2 2 0 1 0 14 16H2',drop:'M12 2.7s7 7.3 7 12a7 7 0 0 1-14 0c0-4.7 7-12 7-12z',bld:'M3 21h18M5 21V7l7-4 7 4v14M9 9h1M14 9h1M9 13h1M14 13h1M10 21v-4h4v4',mon:'M2 4h20v12H2zM8 20h8M12 16v4',alert:'M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01',lock:'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4'};
+const Ic=({n,c='w-4 h-4'})=>html`<svg viewBox="0 0 24 24" className=${c} fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d=${P[n]}/></svg>`;
+const DEP={
+iiv:{n:'IIV',f:'Ichki ishlar vazirligi',i:'shield',pr:'high',c:'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300',k:'janjal,urush,kaltak,tahdid,ogirlik,ogri,talon,bosqin,jinoyat,zorlik,qotil,firibgar,avariya,politsiya,militsiya,giyohvand,tartibsizlik,shovqin,urib ketdi,mast haydovchi'},
+fvv:{n:'FVV',f:'Favqulodda vaziyatlar vazirligi',i:'flame',pr:'high',c:'bg-red-100 text-red-700 dark:bg-red-500/20 dark:text-red-300',k:'yongin,olov,tutun,portlash,zilzila,toshqin,kochki,qutqaruv,qulad,kimyoviy,radiatsiya,yonib,yonmoqda,yonyapti,yonayot,suv toshqin'},
+ssv:{n:'Tez yordam',f:'Sog’liqni saqlash vazirligi',i:'cross',pr:'high',c:'bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-300',k:'tez yordam,kasal,jarohat,qon ket,hushidan,nafas,yurak,zaharlan,shifokor,ogriq,isitma,tugruq,yaralan,qonash,tutqanoq'},
+gaz:{n:'Hududgaz',f:'Hududiy gaz ta’minoti',i:'wind',pr:'high',c:'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300',k:'gaz,plita,balon'},
+elk:{n:'Elektr tarmoqlari',f:'Hududiy elektr tarmoqlari',i:'zap',pr:'mid',c:'bg-yellow-100 text-yellow-800 dark:bg-yellow-500/20 dark:text-yellow-300',k:'elektr,svet,tok,chiroq,yoruglik,transformator,simyogoch'},
+suv:{n:'Suv ta’minoti',f:'Suv ta’minoti va kanalizatsiya xizmati',i:'drop',pr:'mid',c:'bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-300',k:'suv,quvur,kanalizatsiya,vodoprovod,kran,oqayapti,oqmoqda,bosim'},
+hok:{n:'Hokimlik',f:'Hokimlik obodonlashtirish bo’limi',i:'bld',pr:'low',c:'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300',k:'yol,chuqur,axlat,chiqindi,svetofor,yoritish,kocha,ariq,daraxt,trotuar,obodon,hokim,avtobus,maydoncha,hovli'},
+it:{n:'Texnik yordam',f:'Texnik yordam xizmati',i:'mon',pr:'mid',c:'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-300',k:'ilova,parol,tizim,sayt,internet,hisobot,yukla,profil,tolov,dastur,server,login,akkaunt,xato,excel,rasm'},
+gen:{n:'Umumiy bo’lim',f:'Mos mutaxassis topilmadi, umumiy bo’limga yo’naltiriladi',i:'layers',pr:'mid',c:'bg-slate-200 text-slate-700 dark:bg-slate-500/20 dark:text-slate-300',k:''}};
+const dp=k=>DEP[k]||DEP.gen;
+const ORD=['fvv','ssv','iiv','gaz','elk','suv','hok','it'];
+const route=s=>{const t=(s||'').toLowerCase().replace(/[’'‘`ʻʼ´]/g,'');const w=t.split(/[^a-z0-9]+/).filter(Boolean);let b='gen',m=0;ORD.forEach(k=>{const n=DEP[k].k.split(',').reduce((a,e)=>a+((e.includes(' ')?t.includes(e):w.some(x=>x.startsWith(e)))?1:0),0);if(n>m){m=n;b=k}});return b};
+const COLS=[{k:'new',n:'Yangi',bg:'bg-sky-200/40 dark:bg-sky-400/10',bd:'bg-sky-500',dot:'bg-sky-500'},{k:'doing',n:'Bajarilmoqda',bg:'bg-amber-200/40 dark:bg-amber-400/10',bd:'bg-amber-500',dot:'bg-amber-500'},{k:'done',n:'Tugagan',bg:'bg-emerald-200/40 dark:bg-emerald-400/10',bd:'bg-emerald-500',dot:'bg-emerald-500'}];
+const SN={new:'Yangi',doing:'Bajarilmoqda',done:'Tugagan'};
+const PR={high:['Yuqori','bg-rose-500','text-rose-700 bg-rose-100 dark:bg-rose-500/15 dark:text-rose-300'],mid:['O’rta','bg-amber-500','text-amber-700 bg-amber-100 dark:bg-amber-500/15 dark:text-amber-300'],low:['Past','bg-emerald-500','text-emerald-700 bg-emerald-100 dark:bg-emerald-500/15 dark:text-emerald-300']};
+const ds=n=>new Date(Date.now()+n*864e5).toISOString().slice(0,10);
+const fd=d=>d?d.split('-').reverse().join('.'):'—';
+const ini=n=>(n||'?').split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const sh=s=>s.length>42?s.slice(0,42)+'…':s;
+const fmt=d=>[d.slice(0,2),d.slice(2,5),d.slice(5,7),d.slice(7,9)].filter(Boolean).join(' ');
+const showPh=p=>p?'+998 '+fmt(p):'';
+const mk=(name,surname,phone,title,dep,priority,status,due)=>({id:uid(),name,surname,phone,title,dep,priority,status,due});
+const seed=()=>({tasks:[
+mk('Dilshod','Rahimov','901234567','Ikki guruh o’rtasida janjal va kaltaklash boshlandi','iiv','high','new',ds(2)),
+mk('Nodira','Saidova','934567890','Ko’p qavatli uyning 3-qavatida yong’in chiqdi','fvv','high','doing',ds(4)),
+mk('Sardor','Ergashev','997654321','Uyda uch kundan beri elektr o’chgan, chiroqlar yonmayapti','elk','mid','new',ds(6)),
+mk('Madina','Qodirova','971112233','Ilovada profil rasmi yuklanmayapti','it','low','done',ds(-1))],
+log:[{t:Date.now(),x:'Namunaviy vazifalar yuklandi'}]});
+const load=()=>{try{const s=JSON.parse(localStorage.getItem('vt_state3'));if(s&&s.tasks)return s}catch(e){}return seed()};
+const glass='rounded-2xl border border-white/70 dark:border-white/10 bg-white/85 dark:bg-slate-900/75 shadow-sm shadow-sky-900/5';
+const inp='w-full h-11 px-3.5 rounded-xl text-[15px] bg-white/90 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-700 outline-none focus:ring-4 focus:ring-sky-400/25 focus:border-sky-500 transition placeholder:text-slate-400';
+const bt='inline-flex items-center gap-1 h-7 px-2.5 rounded-lg text-xs font-medium border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/60 hover:bg-white dark:hover:bg-slate-700 transition active:scale-95';
+const prim='w-full h-12 rounded-xl text-[15px] font-semibold text-white bg-gradient-to-r from-sky-500 to-blue-600 shadow-lg shadow-sky-500/30 hover:brightness-110 transition active:scale-[.98] inline-flex items-center justify-center gap-2';
+const Badge=({p})=>html`<span className=${'inline-flex shrink-0 items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-medium '+PR[p][2]}><span className=${'w-1.5 h-1.5 rounded-full '+PR[p][1]}></span>${PR[p][0]}</span>`;
+const Av=({n,c='w-6 h-6 text-[10px]'})=>html`<span title=${n} className=${c+' shrink-0 rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 text-white font-semibold grid place-items-center'}>${ini(n)}</span>`;
+const DepChip=({k})=>html`<span className=${'inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold whitespace-nowrap '+dp(k).c}><${Ic} n=${dp(k).i} c="w-3 h-3"/>${dp(k).n}</span>`;
+const Fld=({t,err,children})=>html`<label className="block"><span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-1.5">${t}</span>${children}${err?html`<span className="block text-xs text-rose-500 mt-1">${err}</span>`:null}</label>`;
+
+function Form({init,onSave,onCancel,wizard}){
+ const [f,setF]=useState(init);const [step,setStep]=useState(wizard?1:2);const [tr,setTr]=useState(false);
+ const s=k=>e=>setF({...f,[k]:e.target.value});
+ const ph=e=>setF({...f,phone:e.target.value.replace(/\D/g,'').replace(/^998/,'').slice(0,9)});
+ const tt=e=>{const v=e.target.value,dep=f.manual?f.dep:route(v);setF({...f,title:v,dep,...(wizard&&!f.pm?{priority:dp(dep).pr}:{})})};
+ const d=dp(f.dep);
+ const panel=html`<div className="rounded-2xl border border-sky-200/70 dark:border-white/10 bg-sky-50/70 dark:bg-white/5 p-3 flex items-center gap-3"><span className=${'w-11 h-11 shrink-0 rounded-xl grid place-items-center '+d.c}><${Ic} n=${d.i} c="w-5 h-5"/></span><div className="min-w-0 flex-1"><div className="text-[10px] font-semibold uppercase tracking-wide text-slate-500 flex items-center gap-2">${f.manual?'Qo’lda tanlangan':'Avtomatik yo’naltirish'}${f.manual&&html`<button type="button" className="normal-case text-sky-600 hover:underline" onClick=${()=>setF({...f,manual:false,dep:route(f.title)})}>Avto</button>`}</div><div className="text-sm font-semibold truncate">${d.n}</div><div className="text-xs text-slate-500 line-clamp-2">${d.f}</div></div><select value=${f.dep} onChange=${e=>setF({...f,dep:e.target.value,manual:true})} className="h-8 w-24 shrink-0 rounded-lg text-xs bg-white/90 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 outline-none px-1.5">${Object.keys(DEP).map(k=>html`<option key=${k} value=${k}>${DEP[k].n}</option>`)}</select></div>`;
+ const e1=f.phone.length!==9?'Telefon raqami 9 ta raqamdan iborat bo’lishi kerak':'';
+ const er={name:wizard&&!f.name.trim()?'Ismni kiriting':'',surname:wizard&&!f.surname.trim()?'Familiyani kiriting':'',title:!f.title.trim()?'Muammoni yozing':''};
+ const submit=e=>{e.preventDefault();setTr(true);
+  if(step===1){if(!e1){setStep(2);setTr(false)}return}
+  if(er.name||er.surname||er.title)return;
+  onSave({...f,name:f.name.trim(),surname:f.surname.trim(),title:f.title.trim()})};
+ const phoneBox=html`<div className="flex rounded-xl border border-slate-200 dark:border-slate-700 bg-white/90 dark:bg-slate-900/60 focus-within:ring-4 focus-within:ring-sky-400/25 focus-within:border-sky-500 transition"><span className="px-3.5 grid place-items-center text-[15px] text-slate-500 border-r border-slate-200 dark:border-slate-700">+998</span><input autoFocus=${step===1} inputMode="tel" className="flex-1 min-w-0 h-11 px-3 bg-transparent outline-none text-[15px] tabular-nums" value=${fmt(f.phone)} onChange=${ph} placeholder="90 123 45 67"/></div>`;
+ if(step===1)return html`<form onSubmit=${submit} className="space-y-4">
+  <div className="text-center mb-2"><div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-sky-400 to-blue-600 grid place-items-center text-white shadow-lg shadow-sky-500/30"><${Ic} n="send" c="w-9 h-9"/></div><h2 className="text-xl font-bold mt-4">Telefon raqami</h2><p className="text-sm text-slate-500 mt-1">Mijoz bilan bog’lanish uchun raqamni kiriting</p></div>
+  <div className="h-11 px-3.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-900/40 flex items-center justify-between text-[15px]"><span>O’zbekiston</span><span className="text-slate-500">+998</span></div>
+  <${Fld} t="Telefon raqami" err=${tr?e1:''}>${phoneBox}<//>
+  <button type="submit" className=${prim}>Keyingisi<${Ic} n="right"/></button>
+  <button type="button" onClick=${onCancel} className="w-full text-sm text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 transition">Bekor qilish</button></form>`;
+ return html`<form onSubmit=${submit} className="space-y-4">
+  ${wizard&&html`<div className="flex items-center justify-between"><button type="button" onClick=${()=>setStep(1)} className=${bt+' h-8'}><${Ic} n="left" c="w-3 h-3"/>Orqaga</button><span className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 h-8 rounded-full bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300"><${Ic} n="phone" c="w-3 h-3"/>${showPh(f.phone)}</span></div>
+  <div className="text-center"><h2 className="text-xl font-bold">Mijoz ma’lumotlari</h2><p className="text-sm text-slate-500 mt-1">Ism, familiya va muammoni yozing. Vazifa mutaxassisga avtomatik yo’naltiriladi</p></div>`}
+  ${!wizard&&html`<${Fld} t="Telefon raqami">${phoneBox}<//>`}
+  <div className="grid grid-cols-2 gap-3">
+   <${Fld} t="Ism" err=${tr?er.name:''}><input autoFocus=${wizard} className=${inp} value=${f.name} onChange=${s('name')} placeholder="Ism"/><//>
+   <${Fld} t="Familiya" err=${tr?er.surname:''}><input className=${inp} value=${f.surname} onChange=${s('surname')} placeholder="Familiya"/><//>
+  </div>
+  <${Fld} t="Muammo" err=${tr?er.title:''}><textarea rows="3" className=${inp+' h-auto py-2.5 resize-none'} value=${f.title} onChange=${tt} placeholder="Muammoni batafsil yozing..."></textarea><//>
+  ${panel}
+  <${Fld} t="Ustuvorlik"><div className="grid grid-cols-3 gap-2">${Object.keys(PR).map(k=>html`<button type="button" key=${k} onClick=${()=>setF({...f,priority:k,pm:true})} className=${'h-10 rounded-xl text-sm font-medium border transition '+(f.priority===k?'border-sky-500 bg-sky-500/10 text-sky-700 dark:text-sky-300 ring-2 ring-sky-400/30':'border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-white/70 dark:hover:bg-slate-800')}>${PR[k][0]}</button>`)}</div><//>
+  <div className=${'grid gap-3 '+(wizard?'grid-cols-1':'grid-cols-2')}>
+   
+   <${Fld} t="Muddat"><input type="date" className=${inp} value=${f.due} onChange=${s('due')}/><//>
+   ${!wizard&&html`<${Fld} t="Holat"><select className=${inp} value=${f.status} onChange=${s('status')}>${COLS.map(c=>html`<option key=${c.k} value=${c.k}>${c.n}</option>`)}</select><//>`}
+  </div>
+  ${wizard?html`<button type="submit" className=${prim}><${Ic} n="send"/>Vazifani yaratish</button>`:html`<div className="flex gap-2 pt-1"><button type="button" onClick=${onCancel} className="h-11 px-4 rounded-xl text-sm font-medium border border-slate-200 dark:border-slate-700 hover:bg-white/70 dark:hover:bg-slate-800 transition">Bekor qilish</button><button type="submit" className=${prim+' flex-1 !h-11'}>Saqlash</button></div>`}
+ </form>`}
+
+function TaskCard({t,open,move,del}){
+ const st=fn=>e=>{e.stopPropagation();fn()};const cl=(t.name+' '+t.surname).trim();
+ return html`<div draggable="true" onDragStart=${e=>e.dataTransfer.setData('text',t.id)} onClick=${()=>open(t.id)} className=${glass+' p-3.5 cursor-grab active:cursor-grabbing hover:shadow-lg [@media(hover:hover)]:hover:-translate-y-0.5 transition up'}>
+  <div className="flex items-start justify-between gap-2"><h4 className="text-sm font-semibold leading-snug line-clamp-3">${t.title}</h4><${Badge} p=${t.priority}/></div>
+  ${!cl&&!t.phone&&html`<div className="mt-3 inline-flex items-center gap-1.5 text-xs text-slate-500"><${Ic} n="lock" c="w-3 h-3"/>Anonim xabar</div>`}${(cl||t.phone)&&html`<div className="flex items-center gap-2.5 mt-3 p-2 rounded-xl bg-sky-50/80 dark:bg-white/5"><${Av} n=${cl||'?'} c="w-8 h-8 text-xs"/><div className="min-w-0 text-xs"><div className="font-medium truncate">${cl||'Mijoz'}</div>${t.phone&&html`<div className="text-slate-500 flex items-center gap-1 tabular-nums"><${Ic} n="phone" c="w-3 h-3"/>${showPh(t.phone)}</div>`}</div></div>`}
+  <div className="flex items-center justify-between mt-3 text-xs text-slate-500"><span className="flex items-center gap-1.5 min-w-0">Yo’naltirildi:<${DepChip} k=${t.dep}/></span><span className="flex items-center gap-1 shrink-0"><${Ic} n="cal" c="w-3.5 h-3.5"/>${fd(t.due)}</span></div>
+  <div className="flex flex-wrap items-center gap-1.5 mt-3 pt-3 border-t border-slate-200/70 dark:border-white/10">
+   ${t.status!=='new'&&html`<button className=${bt} onClick=${st(()=>move(t.id,t.status==='done'?'doing':'new'))}><${Ic} n="left" c="w-3 h-3"/>Orqaga</button>`}
+   ${t.status==='new'&&html`<button className=${bt+' !bg-blue-600 !text-white !border-blue-600 hover:!bg-blue-500'} onClick=${st(()=>move(t.id,'doing'))}>Bajarilmoqda<${Ic} n="right" c="w-3 h-3"/></button>`}
+   ${t.status==='doing'&&html`<button className=${bt+' !bg-emerald-600 !text-white !border-emerald-600 hover:!bg-emerald-500'} onClick=${st(()=>move(t.id,'done'))}><${Ic} n="check" c="w-3 h-3"/>Tugatish</button>`}
+   <span className="flex-1"></span>
+   <button className=${bt} title="Tahrirlash" onClick=${st(()=>open(t.id))}><${Ic} n="edit" c="w-3 h-3"/>Tahrir</button>
+   <button className=${bt+' hover:!text-rose-600'} title="O’chirish" onClick=${st(()=>del(t.id))}><${Ic} n="trash" c="w-3 h-3"/></button>
+  </div></div>`}
+
+const nrm=s=>(s||'').toLowerCase().replace(/[’'‘`ʻʼ´]/g,'');
+const N112=['112','Yagona favqulodda raqam'];
+const ADV={
+fvv:{lv:'danger',t:'Favqulodda holat',w:['Xavfli hududni zudlik bilan tark eting va xavfsiz masofaga uzoqlashing.','Liftdan foydalanmang, zina orqali chiqing.','Qutqaruvchilar tez orada hodisa joyiga yetib boradi va vaziyat nazoratga olinadi.'],nums:[['101','Yong’in xavfsizligi xizmati'],N112,['1101','FVV ishonch telefoni']]},
+iiv:{lv:'danger',t:'Xavfsizlik ogohlantirishi',w:['Janjal yoki xavfli joydan uzoqlashing, aralashmang.','Xavfsiz joyga o’tib, hodisa manzilini aniq ayting.','Ichki ishlar xodimlari tez orada yetib keladi.'],nums:[['102','Ichki ishlar organlari'],N112]},
+ssv:{lv:'danger',t:'Tibbiy shoshilinch holat',w:['Jabrlanuvchini keraksiz qimirlatmang va xotirjam bo’ling.','Uning nafas olishi va ongini kuzatib turing.','Brigada kelguncha telefoningiz band bo’lmasin.'],nums:[['103','Tez tibbiy yordam'],N112]},
+gaz:{lv:'danger',t:'Gaz xavfi',w:['Uyni zudlik bilan tark eting va uzoqlashing.','Chiroq, telefon, zajigalka va elektr tugmalarini yoqmang.','Imkon bo’lsa, gaz jo’mragini yoping va derazalarni oching.','Gaz xizmati vaziyatni tez orada nazoratga oladi.'],nums:[['104','Gaz avariya xizmati'],['101','Yong’in xavfsizligi xizmati'],N112]},
+gaz2:{lv:'warn',t:'Gaz ta’minoti',w:['Plita va gaz jo’mraklarini yopib qo’ying.','Gaz hidi sezilsa, uyni darhol tark eting va 104 ga qo’ng’iroq qiling.','Mutaxassislar murojaatni tez orada ko’rib chiqadi.'],nums:[['104','Gaz avariya xizmati'],N112]},
+elk:{lv:'warn',t:'Elektr xavfi',w:['Uzilgan yoki uchqunlayotgan simlarga yaqinlashmang.','Nam qo’l bilan elektr asboblariga tegmang.','Elektr xizmati muammoni tez orada ko’rib chiqadi.'],nums:[N112]},
+suv:{lv:'info',t:'Murojaat qabul qilindi',w:['Quvur yorilgan bo’lsa, asosiy jo’mrakni yoping.','Elektr asboblarini suvdan uzoqlashtiring.','Suv ta’minoti xizmati muammoni tez orada ko’rib chiqadi.'],nums:[]},
+hok:{lv:'info',t:'Murojaat qabul qilindi',w:['Murojaatingiz tegishli bo’limga uzatildi.','Hodisa joyida xavf bo’lsa, boshqalarni ogohlantiring.'],nums:[]},
+it:{lv:'info',t:'Murojaat qabul qilindi',w:['Murojaatingiz texnik yordam xizmatiga uzatildi.','Parol va shaxsiy ma’lumotlarni hech kimga bermang.'],nums:[]},
+gen:{lv:'info',t:'Murojaat qabul qilindi',w:['Murojaatingiz umumiy bo’limga qabul qilindi.','Mutaxassis tez orada siz bilan bog’lanadi.'],nums:[]}};
+const LV={danger:['border-rose-300 bg-rose-50 text-rose-900 dark:border-rose-500/40 dark:bg-rose-500/10 dark:text-rose-100','text-rose-600 dark:text-rose-300','bg-rose-600'],warn:['border-amber-300 bg-amber-50 text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-100','text-amber-600 dark:text-amber-300','bg-amber-600'],info:['border-sky-300 bg-sky-50 text-sky-900 dark:border-sky-500/40 dark:bg-sky-500/10 dark:text-sky-100','text-sky-600 dark:text-sky-300','bg-sky-600']};
+const advice=t=>{const x=nrm(t.title);
+ if(t.dep==='gaz'&&!/hid|sizib|portla|yonib|yonmoqda/.test(x))return ADV.gaz2;
+ if(t.dep==='fvv'&&/yongin|olov|tutun|yonib|yonmoqda/.test(x))return {...ADV.fvv,w:[ADV.fvv.w[0],'Tutun bo’lsa, pastroq egilib, nam mato orqali nafas oling.',...ADV.fvv.w.slice(1)]};
+ return ADV[t.dep]||ADV.gen};
+function Sent({t,onClose}){
+ const a=advice(t),lv=LV[a.lv],[st,setSt]=useState(0);
+ useEffect(()=>{const x=setTimeout(()=>setSt(1),900),y=setTimeout(()=>setSt(2),2000);return()=>{clearTimeout(x);clearTimeout(y)}},[]);
+ const steps=['Yuborildi','Yetkazildi','Ko’rib chiqilmoqda'];
+ return html`<div className="fixed inset-0 z-[60] grid place-items-center p-4 bg-slate-900/50 fd" onClick=${onClose}><div onClick=${e=>e.stopPropagation()} className="w-full max-w-[420px] max-h-full overflow-y-auto rounded-3xl p-6 shadow-2xl bg-white/95 dark:bg-slate-900/95 border border-white/70 dark:border-white/10 up">
+  <div className="text-center"><div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 grid place-items-center text-white shadow-lg shadow-emerald-500/30"><${Ic} n="check" c="w-10 h-10"/></div><h2 className="text-xl font-bold mt-4">Xabar yuborildi</h2><p className="text-sm text-slate-500 mt-1.5 line-clamp-2">“${t.title}”</p><div className="mt-2 inline-flex items-center gap-1.5 text-sm">Yo’naltirildi:<${DepChip} k=${t.dep}/></div>
+   <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 mt-4 text-[11px]">${steps.map((s,i)=>html`<span key=${s} className=${'inline-flex items-center gap-1 transition-colors duration-500 '+(i<=st?'text-emerald-600 dark:text-emerald-400 font-semibold':'text-slate-400')}><${Ic} n="check" c="w-3 h-3"/>${s}</span>`)}</div></div>
+  <div className=${'mt-5 rounded-2xl border p-4 '+lv[0]}><div className="flex items-center gap-2 font-bold text-sm uppercase tracking-wide"><${Ic} n="alert" c=${'w-5 h-5 '+lv[1]}/>${a.t}</div><ol className="mt-3 space-y-2">${a.w.map((x,i)=>html`<li key=${i} className="flex gap-2.5 text-sm"><span className=${'w-5 h-5 shrink-0 rounded-full text-white text-[11px] font-bold grid place-items-center '+lv[2]}>${i+1}</span><span>${x}</span></li>`)}</ol></div>
+  ${a.nums.length>0&&html`<div className="mt-4"><div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-2">Favqulodda raqamlar</div><div className="grid gap-2">${a.nums.map(([n,l])=>html`<a key=${n} href=${'tel:'+n} className=${'flex items-center gap-3 rounded-xl px-3.5 py-3 text-white transition active:scale-[.98] hover:brightness-110 '+(a.lv==='danger'?'bg-gradient-to-r from-rose-500 to-red-600':'bg-gradient-to-r from-sky-500 to-blue-600')}><span className="w-9 h-9 rounded-full bg-white/20 grid place-items-center"><${Ic} n="phone"/></span><span className="text-2xl font-bold tabular-nums">${n}</span><span className="text-xs text-white/90 ml-auto text-right">${l}</span></a>`)}</div></div>`}
+  <p className="mt-4 text-[11px] text-slate-500 text-center">Hayotga xavf bo’lsa, ushbu xabarni kutmasdan darhol yuqoridagi raqamga qo’ng’iroq qiling.</p>
+  <button onClick=${onClose} className=${prim+' mt-4'}>Tushunarli</button></div></div>`}
+function App(){
+ const [init]=useState(load);
+ const [tasks,setTasks]=useState(init.tasks);const [log,setLog]=useState(init.log);
+ const [view,setView]=useState('board');const [q,setQ]=useState('');const [fl,setFl]=useState('all');
+ const [modal,setModal]=useState(false);const [drawer,setDrawer]=useState(null);const [toast,setToast]=useState('');const [qa,setQa]=useState('');const [over,setOver]=useState(null);const [sent,setSent]=useState(null);
+ const [dark,setDark]=useState(()=>{try{const m=localStorage.getItem('vt_theme');if(m)return m==='d'}catch(e){}return matchMedia('(prefers-color-scheme: dark)').matches});
+ useEffect(()=>{document.documentElement.classList.toggle('dark',dark);try{localStorage.setItem('vt_theme',dark?'d':'l')}catch(e){}},[dark]);
+ useEffect(()=>{try{localStorage.setItem('vt_state3',JSON.stringify({tasks,log}))}catch(e){}},[tasks,log]);
+ useEffect(()=>{if(!toast)return;const i=setTimeout(()=>setToast(''),2600);return()=>clearTimeout(i)},[toast]);
+ useEffect(()=>{const k=e=>{if(e.key==='Escape'){setModal(false);setDrawer(null);setSent(null)}};addEventListener('keydown',k);return()=>removeEventListener('keydown',k)},[]);
+ const note=x=>{setLog(l=>[{t:Date.now(),x},...l].slice(0,40));setToast(x)};
+ const cnt=k=>tasks.filter(t=>t.status===k).length;
+ const add=o=>{const dep=o.dep||route(o.title);const t={id:uid(),name:'',surname:'',phone:'',priority:dp(dep).pr,due:ds(3),...o,dep,status:'new'};setTasks(a=>[t,...a]);setLog(l=>[{t:Date.now(),x:'“'+sh(t.title)+'” vazifasi '+dp(dep).n+' ga yo’naltirildi'},...l].slice(0,40));setSent(t)};
+ const move=(id,s)=>{const t=tasks.find(x=>x.id===id);if(!t||t.status===s)return;setTasks(a=>a.map(x=>x.id===id?{...x,status:s}:x));note('“'+sh(t.title)+'” — '+SN[s]+' holatiga o’tdi')};
+ const del=id=>{const t=tasks.find(x=>x.id===id);if(!t)return;setTasks(a=>a.filter(x=>x.id!==id));setDrawer(null);note('“'+sh(t.title)+'” vazifasi o’chirildi')};
+ const save=o=>{const old=tasks.find(x=>x.id===o.id);setTasks(a=>a.map(x=>x.id===o.id?o:x));setDrawer(null);note(old&&old.status!==o.status?'“'+sh(o.title)+'” — '+SN[o.status]+' holatiga o’tdi':'“'+sh(o.title)+'” yangilandi')};
+ const reset=()=>{const s=seed();setTasks(s.tasks);setLog(s.log);setToast('Namunaviy vazifalar tiklandi')};
+ const shown=useMemo(()=>tasks.filter(t=>(fl==='all'||t.priority===fl)&&(t.title+t.name+t.surname+t.phone+dp(t.dep).n+dp(t.dep).f).toLowerCase().includes(q.toLowerCase())),[tasks,q,fl]);
+ const nav=[['board','Vazifa taxtasi','board'],['table','Jadval ko’rinishi','table'],['stats','Statistika','chart']];
+ const total=tasks.length,pct=total?Math.round(cnt('done')/total*100):0;
+ const dt=drawer&&tasks.find(t=>t.id===drawer);
+ const tm=t=>new Date(t).toLocaleString('uz-UZ',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'});
+ const nb='w-full flex items-center gap-2.5 px-2.5 h-9 rounded-xl text-sm text-slate-500 hover:bg-white/60 dark:hover:bg-white/5 transition';
+ return html`<div className="h-full relative overflow-hidden bg-gradient-to-br from-sky-100 via-indigo-50 to-rose-100 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950">
+  <div className="absolute inset-0 pointer-events-none"><div className="dots absolute inset-0"></div>
+   <div className="b1 absolute -top-40 -left-32 w-[34rem] h-[34rem] rounded-full"></div>
+   <div className="b2 absolute top-1/4 -right-40 w-[32rem] h-[32rem] rounded-full"></div>
+   <div className="b3 absolute -bottom-48 left-1/3 w-[34rem] h-[34rem] rounded-full"></div></div>
+  <div className="relative h-full flex">
+  <aside className="w-14 md:w-60 shrink-0 border-r border-white/60 dark:border-white/10 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl p-2 md:p-3 flex flex-col">
+   <div className="flex items-center gap-2.5 px-1.5 py-2 mb-4"><span className="w-8 h-8 rounded-xl bg-gradient-to-br from-sky-400 to-blue-600 text-white grid place-items-center shadow-md shadow-sky-500/30"><${Ic} n="layers"/></span><span className="hidden md:block font-bold tracking-tight">Vazifa Taxtasi</span></div>
+   <nav className="space-y-1">${nav.map(([k,n,i])=>html`<button key=${k} onClick=${()=>setView(k)} className=${'w-full flex items-center gap-2.5 px-2.5 h-9 rounded-xl text-sm transition '+(view===k?'bg-white dark:bg-white/10 shadow-sm font-semibold text-sky-700 dark:text-sky-300':'text-slate-500 hover:bg-white/60 dark:hover:bg-white/5')}><${Ic} n=${i}/><span className="hidden md:block">${n}</span></button>`)}</nav>
+   <div className="mt-auto space-y-1">
+    <button onClick=${()=>setDark(!dark)} className=${nb}><${Ic} n=${dark?'sun':'moon'}/><span className="hidden md:block">${dark?'Yorug’ rejim':'Qorong’i rejim'}</span></button>
+    <button onClick=${reset} className=${nb}><${Ic} n="reset"/><span className="hidden md:block">Namunalarni tiklash</span></button>
+   </div>
+  </aside>
+  <main className="flex-1 min-w-0 overflow-y-auto overflow-x-hidden overscroll-contain">
+   <div className="max-w-6xl mx-auto p-4 md:p-8 space-y-5">
+    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-600 text-white p-6 md:p-7 shadow-xl shadow-blue-500/20">
+     <svg className="absolute right-0 top-0 h-full w-72 opacity-90 hidden sm:block" viewBox="0 0 280 160" fill="none"><circle cx="230" cy="30" r="70" fill="#fff" fillOpacity=".10"/><circle cx="130" cy="150" r="60" fill="#fff" fillOpacity=".08"/><g transform="rotate(-8 190 80)"><rect x="140" y="30" width="110" height="100" rx="16" fill="#fff" fillOpacity=".95"/><circle cx="164" cy="58" r="8" fill="#10b981"/><path d="m160 58 3 3 5-6" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><rect x="180" y="53" width="56" height="8" rx="4" fill="#cbd5e1"/><circle cx="164" cy="86" r="8" fill="#f59e0b"/><rect x="180" y="81" width="42" height="8" rx="4" fill="#cbd5e1"/><circle cx="164" cy="114" r="8" fill="#0ea5e9"/><rect x="180" y="109" width="50" height="8" rx="4" fill="#cbd5e1"/></g></svg>
+     <div className="relative max-w-md"><div className="text-sm text-white/80">Xush kelibsiz</div><h1 className="text-2xl md:text-3xl font-bold tracking-tight mt-1">${nav.find(n=>n[0]===view)[1]}</h1><p className="text-sm text-white/85 mt-1.5">${cnt('new')} ta yangi, ${cnt('doing')} ta jarayonda. Jamoa ${pct}% vazifani yakunladi.</p>
+      <div className="mt-4 h-2 rounded-full bg-white/25 overflow-hidden"><div className="h-full bg-white rounded-full transition-all duration-500" style=${{width:pct+'%'}}></div></div>
+      <button onClick=${()=>setModal(true)} className="mt-5 h-10 px-4 rounded-xl text-sm font-semibold bg-white text-blue-700 inline-flex items-center gap-2 shadow-md hover:shadow-lg transition active:scale-95"><${Ic} n="plus"/>Yangi vazifa</button></div>
+    </div>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+     ${[['Jami vazifalar',total,'layers','from-slate-500 to-slate-700'],['Yangi',cnt('new'),'plus','from-sky-400 to-blue-600'],['Bajarilmoqda',cnt('doing'),'clock','from-amber-400 to-orange-500'],['Tugagan',cnt('done'),'check','from-emerald-400 to-teal-600']].map(([n,v,i,g])=>html`<div key=${n} className=${glass+' px-4 py-3 flex items-center gap-3'}><span className=${'w-10 h-10 rounded-xl bg-gradient-to-br text-white grid place-items-center shadow-md '+g}><${Ic} n=${i} c="w-5 h-5"/></span><div><div className="text-xs text-slate-500">${n}</div><div className="text-2xl font-bold tabular-nums leading-tight">${v}</div></div></div>`)}
+    </div>
+    ${view!=='stats'&&html`<div className="contents">
+     <form onSubmit=${e=>{e.preventDefault();if(qa.trim()){add({title:qa.trim()});setQa('')}}} className=${glass+' p-2 pl-3.5 mt-5'}><div className="flex items-center gap-2 pt-0.5 pb-1 text-xs"><span className="font-semibold">Tez qo’shish</span><span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-slate-200/80 dark:bg-white/10 text-slate-600 dark:text-slate-300 font-medium"><${Ic} n="lock" c="w-3 h-3"/>Anonim xabar</span></div><div className="flex items-center gap-2"><${Ic} n="plus" c="w-4 h-4 text-sky-500"/><input value=${qa} onChange=${e=>setQa(e.target.value)} placeholder="Muammoni yozing va Enter bosing" className="flex-1 min-w-0 bg-transparent outline-none text-sm h-9"/><button className=${bt+' h-9 px-3'}>Yuborish</button></div></form>
+     <div className="sticky top-2 z-20 mt-3 p-2 rounded-2xl border border-white/70 dark:border-white/10 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md shadow-md shadow-sky-900/5 flex flex-wrap items-center gap-2">
+      <div className="relative flex-1 min-w-[180px] max-w-xs"><span className="absolute left-3 top-3 text-slate-400"><${Ic} n="search"/></span><input value=${q} onChange=${e=>setQ(e.target.value)} placeholder="Qidirish..." className=${inp+' !h-10 pl-9'}/></div>
+      <div className="flex gap-1.5">${[['all','Barchasi'],['high','Yuqori'],['mid','O’rta'],['low','Past']].map(([k,n])=>html`<button key=${k} onClick=${()=>setFl(k)} className=${'h-9 px-3.5 rounded-full text-xs font-medium border transition '+(fl===k?'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25':'border-white/70 dark:border-white/10 bg-white/60 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-white/10')}>${n}</button>`)}</div>
+     </div></div>`}
+    ${view==='board'&&html`<div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">${COLS.map(c=>{const items=shown.filter(t=>t.status===c.k);return html`<section key=${c.k} onDragOver=${e=>{e.preventDefault();setOver(c.k)}} onDragLeave=${()=>setOver(null)} onDrop=${e=>{e.preventDefault();setOver(null);move(e.dataTransfer.getData('text'),c.k)}} className=${'rounded-3xl p-2.5 min-h-[220px] border transition '+c.bg+' '+(over===c.k?'border-blue-500 ring-4 ring-blue-400/20':'border-white/60 dark:border-white/10')}>
+      <header className="flex items-center justify-between px-2 py-2 mb-2"><h3 className="text-sm font-bold flex items-center gap-2"><span className=${'w-2.5 h-2.5 rounded-full '+c.dot}></span>${c.n}</h3><span className=${'min-w-[1.75rem] h-6 px-2 rounded-full text-white text-xs font-bold grid place-items-center tabular-nums shadow '+c.bd}>${cnt(c.k)}</span></header>
+      <div className="space-y-2.5">${items.map(t=>html`<${TaskCard} key=${t.id} t=${t} open=${setDrawer} move=${move} del=${del}/>`)}${!items.length&&html`<div className="text-xs text-slate-400 text-center py-10 border border-dashed border-slate-300 dark:border-slate-600 rounded-2xl">Vazifalar yo’q</div>`}</div></section>`})}</div>`}
+    ${view==='table'&&html`<div className=${glass+' overflow-x-auto'}><table className="w-full text-sm"><thead><tr className="text-left text-xs text-slate-500 border-b border-slate-200/70 dark:border-white/10">${['Muammo','Mijoz','Telefon','Bo’lim','Ustuvorlik','Muddat','Holat',''].map(h=>html`<th key=${h} className="px-4 py-3 font-medium whitespace-nowrap">${h}</th>`)}</tr></thead><tbody>
+     ${shown.map(t=>html`<tr key=${t.id} className="border-b last:border-0 border-slate-100 dark:border-white/5 hover:bg-white/60 dark:hover:bg-white/5 transition"><td className="px-4 py-3 font-medium cursor-pointer max-w-[260px]" onClick=${()=>setDrawer(t.id)}>${t.title}</td><td className="px-4 py-3 whitespace-nowrap">${(t.name+' '+t.surname).trim()||'Anonim'}</td><td className="px-4 py-3 whitespace-nowrap tabular-nums">${showPh(t.phone)||'—'}</td><td className="px-4 py-3"><${DepChip} k=${t.dep}/></td><td className="px-4 py-3"><${Badge} p=${t.priority}/></td><td className="px-4 py-3 whitespace-nowrap">${fd(t.due)}</td><td className="px-4 py-3"><select value=${t.status} onChange=${e=>move(t.id,e.target.value)} className=${inp+' !h-8 !w-auto !text-xs'}>${COLS.map(c=>html`<option key=${c.k} value=${c.k}>${c.n}</option>`)}</select></td><td className="px-4 py-3"><span className="flex gap-1.5"><button className=${bt} onClick=${()=>setDrawer(t.id)}><${Ic} n="edit" c="w-3 h-3"/></button><button className=${bt+' hover:!text-rose-600'} onClick=${()=>del(t.id)}><${Ic} n="trash" c="w-3 h-3"/></button></span></td></tr>`)}
+     ${!shown.length&&html`<tr><td colSpan="8" className="text-center text-slate-400 py-10">Vazifalar topilmadi</td></tr>`}</tbody></table></div>`}
+    ${view==='stats'&&html`<div className="grid md:grid-cols-2 gap-4">
+     <div className=${glass+' p-5 md:col-span-2'}><div className="flex justify-between text-sm mb-3"><span className="font-semibold">Bajarilish ko’rsatkichi</span><span className="tabular-nums text-slate-500">${cnt('done')} / ${total} · ${pct}%</span></div><div className="h-3 rounded-full bg-slate-200/70 dark:bg-white/10 overflow-hidden"><div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full transition-all duration-500" style=${{width:pct+'%'}}></div></div></div>
+     <div className=${glass+' p-5'}><h3 className="text-sm font-semibold mb-4">Bo’limlar yuklamasi</h3><div className="space-y-4">${Object.keys(DEP).filter(m=>tasks.some(t=>t.dep===m)).map(m=>{const a=tasks.filter(t=>t.dep===m);return html`<div key=${m}><div className="flex justify-between text-xs mb-1.5"><span className="flex items-center gap-2"><${DepChip} k=${m}/></span><span className="text-slate-500 tabular-nums">${a.length} ta</span></div><div className="h-2.5 rounded-full bg-slate-200/70 dark:bg-white/10 flex overflow-hidden">${[['new','bg-sky-500'],['doing','bg-amber-500'],['done','bg-emerald-500']].map(([k,c])=>html`<div key=${k} className=${c+' transition-all duration-500'} style=${{width:(total?a.filter(t=>t.status===k).length/total*100:0)+'%'}}></div>`)}</div></div>`})}</div>
+      <div className="flex gap-4 mt-5 text-xs text-slate-500">${[['Yangi','bg-sky-500'],['Bajarilmoqda','bg-amber-500'],['Tugagan','bg-emerald-500']].map(([n,c])=>html`<span key=${n} className="flex items-center gap-1.5"><span className=${'w-2 h-2 rounded-full '+c}></span>${n}</span>`)}</div></div>
+     <div className=${glass+' p-5'}><h3 className="text-sm font-semibold mb-4">Faoliyat jurnali</h3><ul className="space-y-3 max-h-80 overflow-y-auto">${log.map((l,i)=>html`<li key=${i} className="flex gap-3 text-sm"><span className="w-1.5 h-1.5 mt-2 rounded-full bg-sky-500 shrink-0"></span><div><div>${l.x}</div><div className="text-xs text-slate-400">${tm(l.t)}</div></div></li>`)}</ul></div></div>`}
+   </div>
+  </main>
+  ${modal&&html`<div className="fixed inset-0 z-40 grid place-items-center p-4 bg-slate-900/40 backdrop-blur-sm fd" onClick=${()=>setModal(false)}><div className=${'w-full max-w-[420px] max-h-full overflow-y-auto rounded-3xl p-7 shadow-2xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-white/70 dark:border-white/10 up'} onClick=${e=>e.stopPropagation()}><${Form} wizard=${true} init=${{title:'',name:'',surname:'',phone:'',dep:'gen',priority:'mid',due:ds(3)}} onCancel=${()=>setModal(false)} onSave=${o=>{add(o);setModal(false)}}/></div></div>`}
+  ${dt&&html`<div className="fixed inset-0 z-40 bg-slate-900/30 backdrop-blur-[2px] fd" onClick=${()=>setDrawer(null)}><aside key=${dt.id} onClick=${e=>e.stopPropagation()} className="sl absolute right-0 top-0 h-full w-full max-w-md bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-l border-white/70 dark:border-white/10 p-6 overflow-y-auto shadow-2xl"><div className="flex items-center justify-between mb-5"><h2 className="text-lg font-bold">Vazifa tafsilotlari</h2><button className=${bt} onClick=${()=>setDrawer(null)}><${Ic} n="x" c="w-3.5 h-3.5"/></button></div><${Form} init=${dt} onCancel=${()=>setDrawer(null)} onSave=${save}/><button onClick=${()=>del(dt.id)} className="mt-6 text-xs font-medium text-rose-600 inline-flex items-center gap-1.5 hover:underline"><${Ic} n="trash" c="w-3.5 h-3.5"/>Vazifani o’chirish</button></aside></div>`}
+  ${sent&&html`<${Sent} t=${sent} onClose=${()=>setSent(null)}/>`}
+  ${toast&&html`<div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 up max-w-[92vw]"><div className="flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm shadow-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900"><${Ic} n="check" c="w-4 h-4 shrink-0 text-emerald-400"/>${toast}</div></div>`}
+ </div></div>`}
+ReactDOM.createRoot(document.getElementById('root')).render(html`<${App}/>`);
+</script>
+</body>
+</html>
